@@ -1,11 +1,44 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "es6",
-    "moduleResolution": "node",
+    /* Basic Options */
+    "target": "ES2020",
+    "module": "CommonJS",
+    "checkJs": false,
+    "noEmit": true,
+    "incremental": true,
+    "outDir": "dist",
     "sourceMap": true,
-    "outDir": "dist"
+    "baseUrl": ".",
+    "paths": {
+      "@routes/*": ["app/routes/*"],
+      "@services/*": ["app/services/*"],
+      "@controllers/*": ["app/controllers/*"],
+      "@core/*": ["app/core/*"],
+    },
+    /* Strict Checks */
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false, // Sequelize models are incompatible with "strictPropertyInitialization"
+    /* Linter Checks */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    /* Module Resolution Options */
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    /* Advanced Options */
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    /** Types Resolutions */
+    "typeRoots": ["./@types", "./node_modules/@types"]
   },
-  "lib": ["es2015"]
+  "include": ["app/**/*.ts"],
+  "exclude": ["node_modules"],
 }
