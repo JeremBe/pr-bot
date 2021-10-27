@@ -36,7 +36,6 @@ app.get("/api/webhook", (req, res) => {
 
 app.post("/api/webhook", (req, res) => {
   console.log("==================================");
-  console.log("==================================");
   console.log(req.body);
 
   res.status(200).json();
