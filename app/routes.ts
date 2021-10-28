@@ -1,6 +1,6 @@
-const { getPage } = require("../utils/notion");
+const notionInstance = require("../utils/notion");
 
-const routes = (app) => {
+const init = (app) => {
   app.get("/api/webhook", (req, res) => {
     console.log("==================================");
     console.log("==================================");
@@ -19,9 +19,9 @@ const routes = (app) => {
   app.get("/api/notion/getPageByUrl", async (req, res) => {
     const url = new URL(req.query.params.url);
 
-    const page = await getPage(url);
+    const page = await notionInstance.getPage(url);
     res.status(200).json(page);
   });
 };
 
-module.exports = { routes };
+module.exports = { routes: init };

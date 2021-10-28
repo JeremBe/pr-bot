@@ -4,7 +4,7 @@ const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-const getPage = async (url: URL) => {
+const getPage = async function (url: URL) {
   const results = await notion.search({ query: url });
   const idFirstResult = results[0].id;
 
