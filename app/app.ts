@@ -12,7 +12,7 @@ const server = http.createServer(app)
 server.listen(port)
 
 server.on('listening', () => {
-  console.log(`Server listening on port ${port}`)
+  console.log(`server listening on port ${port}`)
 })
 
 app.use(
