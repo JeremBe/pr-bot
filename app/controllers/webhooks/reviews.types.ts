@@ -1,4 +1,4 @@
-export interface PullRequestPullRequestPullRequestUser {
+export interface PullRequestReviewPullRequestReviewPullRequestReviewPullRequestReviewUser {
   login: string
   id: number
   avatar_url: string
@@ -18,7 +18,31 @@ export interface PullRequestPullRequestPullRequestUser {
   site_admin: boolean
 }
 
-export interface PullRequestPullRequestPullRequestUser {
+export interface PullRequestReviewPullRequestReviewHtml {
+  href: string
+}
+
+export interface PullRequestReviewPullRequestReviewPull_request {
+  href: string
+}
+
+export interface PullRequestReviewPullRequestReview_link {
+  html: PullRequestReviewPullRequestReviewHtml
+  pull_request: PullRequestReviewPullRequestReviewPull_request
+}
+
+export interface PullRequestReviewReview {
+  id: number
+  user: PullRequestReviewPullRequestReviewPullRequestReviewPullRequestReviewUser
+  body: string
+  submitted_at: string
+  state: string
+  html_url: string
+  pull_request_url: string
+  _links: PullRequestReviewPullRequestReview_link
+}
+
+export interface PullRequestReviewPullRequestReviewPullRequestReviewPullRequestReviewUser {
   login: string
   id: number
   avatar_url: string
@@ -38,7 +62,7 @@ export interface PullRequestPullRequestPullRequestUser {
   site_admin: boolean
 }
 
-export interface PullRequestPullRequestPullRequestOwner {
+export interface PullRequestReviewPullRequestReviewPullRequestReviewPullRequestReviewUser {
   login: string
   id: number
   avatar_url: string
@@ -58,11 +82,31 @@ export interface PullRequestPullRequestPullRequestOwner {
   site_admin: boolean
 }
 
-export interface PullRequestPullRequestRepo {
+export interface PullRequestReviewPullRequestReviewPullRequestReviewOwner {
+  login: string
+  id: number
+  avatar_url: string
+  gravatar_id: string
+  url: string
+  html_url: string
+  followers_url: string
+  following_url: string
+  gists_url: string
+  starred_url: string
+  subscriptions_url: string
+  organizations_url: string
+  repos_url: string
+  events_url: string
+  received_events_url: string
+  type: string
+  site_admin: boolean
+}
+
+export interface PullRequestReviewPullRequestReviewRepo {
   id: number
   name: string
   full_name: string
-  owner: PullRequestPullRequestPullRequestOwner
+  owner: PullRequestReviewPullRequestReviewPullRequestReviewOwner
   private: boolean
   html_url: string
   description: string
@@ -103,6 +147,7 @@ export interface PullRequestPullRequestRepo {
   notifications_url: string
   labels_url: string
   releases_url: string
+  deployments_url: string
   created_at: string
   updated_at: string
   pushed_at: string
@@ -128,15 +173,15 @@ export interface PullRequestPullRequestRepo {
   default_branch: string
 }
 
-export interface PullRequestHead {
+export interface PullRequestReviewHead {
   label: string
   ref: string
   sha: string
-  user: PullRequestPullRequestPullRequestUser
-  repo: PullRequestPullRequestRepo
+  user: PullRequestReviewPullRequestReviewPullRequestReviewPullRequestReviewUser
+  repo: PullRequestReviewPullRequestReviewRepo
 }
 
-export interface PullRequestPullRequestPullRequestUser {
+export interface PullRequestReviewPullRequestReviewPullRequestReviewPullRequestReviewUser {
   login: string
   id: number
   avatar_url: string
@@ -156,7 +201,7 @@ export interface PullRequestPullRequestPullRequestUser {
   site_admin: boolean
 }
 
-export interface PullRequestPullRequestPullRequestOwner {
+export interface PullRequestReviewPullRequestReviewPullRequestReviewOwner {
   login: string
   id: number
   avatar_url: string
@@ -176,11 +221,11 @@ export interface PullRequestPullRequestPullRequestOwner {
   site_admin: boolean
 }
 
-export interface PullRequestPullRequestRepo {
+export interface PullRequestReviewPullRequestReviewRepo {
   id: number
   name: string
   full_name: string
-  owner: PullRequestPullRequestPullRequestOwner
+  owner: PullRequestReviewPullRequestReviewPullRequestReviewOwner
   private: boolean
   html_url: string
   description: string
@@ -221,6 +266,7 @@ export interface PullRequestPullRequestRepo {
   notifications_url: string
   labels_url: string
   releases_url: string
+  deployments_url: string
   created_at: string
   updated_at: string
   pushed_at: string
@@ -246,58 +292,58 @@ export interface PullRequestPullRequestRepo {
   default_branch: string
 }
 
-export interface PullRequestBase {
+export interface PullRequestReviewBase {
   label: string
   ref: string
   sha: string
-  user: PullRequestPullRequestPullRequestUser
-  repo: PullRequestPullRequestRepo
+  user: PullRequestReviewPullRequestReviewPullRequestReviewPullRequestReviewUser
+  repo: PullRequestReviewPullRequestReviewRepo
 }
 
-export interface PullRequestSelf {
+export interface PullRequestReviewSelf {
   href: string
 }
 
-export interface PullRequestHtml {
+export interface PullRequestReviewPullRequestReviewHtml {
   href: string
 }
 
-export interface PullRequestIssue {
+export interface PullRequestReviewIssue {
   href: string
 }
 
-export interface PullRequestComment {
+export interface PullRequestReviewComment {
   href: string
 }
 
-export interface PullRequestPullRequestReview_comment {
+export interface PullRequestReviewPullRequestReviewReview_comment {
   href: string
 }
 
-export interface PullRequestPullRequestReview_comment {
+export interface PullRequestReviewPullRequestReviewReview_comment {
   href: string
 }
 
-export interface PullRequestCommit {
+export interface PullRequestReviewCommit {
   href: string
 }
 
-export interface PullRequestStatuse {
+export interface PullRequestReviewStatuse {
   href: string
 }
 
-export interface PullRequest_link {
-  self: PullRequestSelf
-  html: PullRequestHtml
-  issue: PullRequestIssue
-  comments: PullRequestComment
-  review_comments: PullRequestPullRequestReview_comment
-  review_comment: PullRequestPullRequestReview_comment
-  commits: PullRequestCommit
-  statuses: PullRequestStatuse
+export interface PullRequestReviewPullRequestReview_link {
+  self: PullRequestReviewSelf
+  html: PullRequestReviewPullRequestReviewHtml
+  issue: PullRequestReviewIssue
+  comments: PullRequestReviewComment
+  review_comments: PullRequestReviewPullRequestReviewReview_comment
+  review_comment: PullRequestReviewPullRequestReviewReview_comment
+  commits: PullRequestReviewCommit
+  statuses: PullRequestReviewStatuse
 }
 
-export interface PullRequestPull_request {
+export interface PullRequestReviewPullRequestReviewPull_request {
   url: string
   id: number
   html_url: string
@@ -308,36 +354,27 @@ export interface PullRequestPull_request {
   state: string
   locked: boolean
   title: string
-  user: PullRequestPullRequestPullRequestUser
+  user: PullRequestReviewPullRequestReviewPullRequestReviewPullRequestReviewUser
   body: string
   created_at: string
   updated_at: string
   closed_at?: any
   merged_at?: any
-  merge_commit_sha?: any
+  merge_commit_sha: string
   assignee?: any
+  assignees: any[]
   milestone?: any
   commits_url: string
   review_comments_url: string
   review_comment_url: string
   comments_url: string
   statuses_url: string
-  head: PullRequestHead
-  base: PullRequestBase
-  _links: PullRequest_link
-  merged: boolean
-  mergeable?: any
-  mergeable_state: string
-  merged_by?: any
-  comments: number
-  review_comments: number
-  commits: number
-  additions: number
-  deletions: number
-  changed_files: number
+  head: PullRequestReviewHead
+  base: PullRequestReviewBase
+  _links: PullRequestReviewPullRequestReview_link
 }
 
-export interface PullRequestPullRequestPullRequestOwner {
+export interface PullRequestReviewPullRequestReviewPullRequestReviewOwner {
   login: string
   id: number
   avatar_url: string
@@ -357,11 +394,11 @@ export interface PullRequestPullRequestPullRequestOwner {
   site_admin: boolean
 }
 
-export interface PullRequestRepository {
+export interface PullRequestReviewRepository {
   id: number
   name: string
   full_name: string
-  owner: PullRequestPullRequestPullRequestOwner
+  owner: PullRequestReviewPullRequestReviewPullRequestReviewOwner
   private: boolean
   html_url: string
   description: string
@@ -402,6 +439,7 @@ export interface PullRequestRepository {
   notifications_url: string
   labels_url: string
   releases_url: string
+  deployments_url: string
   created_at: string
   updated_at: string
   pushed_at: string
@@ -427,7 +465,7 @@ export interface PullRequestRepository {
   default_branch: string
 }
 
-export interface PullRequestSender {
+export interface PullRequestReviewSender {
   login: string
   id: number
   avatar_url: string
@@ -447,15 +485,10 @@ export interface PullRequestSender {
   site_admin: boolean
 }
 
-export interface PullRequestInstallation {
-  id: number
-}
-
-export interface PullRequest {
+export interface PullRequestReview {
   action: string
-  number: number
-  pull_request: PullRequestPull_request
-  repository: PullRequestRepository
-  sender: PullRequestSender
-  installation: PullRequestInstallation
+  review: PullRequestReviewReview
+  pull_request: PullRequestReviewPullRequestReviewPull_request
+  repository: PullRequestReviewRepository
+  sender: PullRequestReviewSender
 }
