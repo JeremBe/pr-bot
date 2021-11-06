@@ -12,9 +12,23 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - .local/data/postgres:/var/lib/postgresql/data/
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   app:
-    container_name: 'pr-bot'
     build: .
+    container_name: 'pr-bot'
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: 'postgres://postgres@postgres/prBot?connect_timeout=300'
     ports:
       - 5000:5000
+    links:
+      - postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
