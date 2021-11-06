@@ -37,7 +37,8 @@
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     /** Types Resolutions */
-    "typeRoots": ["./@types", "./node_modules/@types"]
+    "typeRoots": ["./@types", "./node_modules/@types"],
+    "lib": ["esnext"]
   },
   "include": ["app/**/*.ts"],
   "exclude": ["node_modules"],
