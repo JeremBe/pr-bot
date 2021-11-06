@@ -10,15 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model PullReuest {
+model PullRequest {
   id        String     @id @default(uuid())
   name      String
   status    String
-  url       String
+  url       String     @unique
   repo      String
   repo_url  String
   author    String
-  authorId  String
+  authorId  Int
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   Reviewer  Reviewer[]
@@ -27,14 +27,14 @@ model PullReuest {
 }
 
 model Reviewer {
-  id             String     @id @default(uuid())
+  id             String      @id @default(uuid())
   author         String
-  authorId       String
+  authorId       Int
   status         String
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  pull_request   PullReuest @relation(fields: [pull_requestId], references: [id])
-  pull_requestId String     @unique
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  pull_request   PullRequest @relation(fields: [pull_requestId], references: [id])
+  pull_requestId String
 
   @@index([pull_requestId, status, authorId])
 }
@@ -42,7 +42,7 @@ model Reviewer {
 model BlacklistedAuthor {
   id        String   @id @default(uuid())
   author    String
-  authorId  String
+  authorId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "PullReuest" (
+CREATE TABLE "PullRequest" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "status" TEXT NOT NULL,
@@ -7,18 +7,18 @@ CREATE TABLE "PullReuest" (
     "repo" TEXT NOT NULL,
     "repo_url" TEXT NOT NULL,
     "author" TEXT NOT NULL,
-    "authorId" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "PullReuest_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "PullRequest_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Reviewer" (
     "id" TEXT NOT NULL,
     "author" TEXT NOT NULL,
-    "authorId" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
     "status" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE "Reviewer" (
 CREATE TABLE "BlacklistedAuthor" (
     "id" TEXT NOT NULL,
     "author" TEXT NOT NULL,
-    "authorId" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -39,10 +39,10 @@ CREATE TABLE "BlacklistedAuthor" (
 );
 
 -- CreateIndex
-CREATE INDEX "PullReuest_repo_url_status_authorId_idx" ON "PullReuest"("repo_url", "status", "authorId");
+CREATE UNIQUE INDEX "PullRequest_url_key" ON "PullRequest"("url");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Reviewer_pull_requestId_key" ON "Reviewer"("pull_requestId");
+CREATE INDEX "PullRequest_repo_url_status_authorId_idx" ON "PullRequest"("repo_url", "status", "authorId");
 
 -- CreateIndex
 CREATE INDEX "Reviewer_pull_requestId_status_authorId_idx" ON "Reviewer"("pull_requestId", "status", "authorId");
@@ -51,4 +51,4 @@ CREATE INDEX "Reviewer_pull_requestId_status_authorId_idx" ON "Reviewer"("pull_r
 CREATE INDEX "BlacklistedAuthor_authorId_idx" ON "BlacklistedAuthor"("authorId");
 
 -- AddForeignKey
-ALTER TABLE "Reviewer" ADD CONSTRAINT "Reviewer_pull_requestId_fkey" FOREIGN KEY ("pull_requestId") REFERENCES "PullReuest"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Reviewer" ADD CONSTRAINT "Reviewer_pull_requestId_fkey" FOREIGN KEY ("pull_requestId") REFERENCES "PullRequest"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
