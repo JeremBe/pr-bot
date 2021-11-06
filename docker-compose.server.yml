@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: 'pr-bot_postgres'
+    image: postgres:11.10-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - .local/data/postgres:/var/lib/postgresql/data/
+
+  app:
+    container_name: 'pr-bot'
+    build: .
+    ports:
+      - 5000:5000
