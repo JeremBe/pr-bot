@@ -300,6 +300,7 @@ export interface PullRequest_link {
 export interface PullRequestPull_request {
   url: string
   id: number
+  draft?: boolean
   html_url: string
   diff_url: string
   patch_url: string

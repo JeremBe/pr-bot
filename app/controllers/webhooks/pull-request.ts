@@ -9,6 +9,10 @@ export async function pullRequestController(req: Request<unknown, unknown, PullR
   try {
     const { body: webhook } = req
 
+    if (webhook.pull_request.draft) {
+      return res.status(200).json()
+    }
+
     const pullRequest = {
       url: webhook.pull_request.html_url,
       name: webhook.pull_request.title,
