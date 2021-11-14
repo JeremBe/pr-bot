@@ -9,7 +9,11 @@ export async function reviewsController(req: Request<unknown, unknown, PullReque
   try {
     const { body: webhook } = req
 
-    const pullRequest = await prisma.pullRequest.findUnique({ where: { url: webhook.pull_request.html_url } })
+    const pullRequest = await prisma.pullRequest.findUnique({
+      where: {
+        url: webhook.pull_request.html_url,
+      },
+    })
 
     if (!pullRequest) {
       console.log(
@@ -30,10 +34,13 @@ export async function reviewsController(req: Request<unknown, unknown, PullReque
 
     await prisma.reviewer.upsert({
       where: {
-        authorId_pull_requestId: { pull_requestId: pullRequest.id, authorId: webhook.pull_request.user.id },
+        authorId_pull_requestId: {
+          pull_requestId: review.pull_requestId,
+          authorId: review.authorId,
+        },
       },
       update: {
-        status: webhook.review.state,
+        status: review.status,
       },
       create: review,
     })
