@@ -10,6 +10,8 @@ export async function pullRequestController(req: Request<unknown, unknown, PullR
     const { body: webhook } = req
 
     if (webhook.pull_request.draft) {
+      console.log('[app/controllers/webhooks/pull-request#pullRequestController] exclude draft pull-request')
+
       return res.status(200).json()
     }
 
@@ -28,10 +30,10 @@ export async function pullRequestController(req: Request<unknown, unknown, PullR
 
     await prisma.pullRequest.upsert({
       where: {
-        url: webhook.pull_request.html_url,
+        url: pullRequest.url,
       },
       update: {
-        status: webhook.pull_request.state,
+        status: pullRequest.status,
       },
       create: pullRequest,
     })
