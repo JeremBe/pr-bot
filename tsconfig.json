@@ -14,7 +14,6 @@
       "@services/*": ["app/services/*"],
       "@controllers/*": ["app/controllers/*"],
       "@core/*": ["app/core/*"],
-      "@types": ["./@types"],
     },
     /* Strict Checks */
     "alwaysStrict": true,

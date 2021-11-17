@@ -20,7 +20,6 @@ services:
 
   app:
     build: .
-    image: 'pr-bot:latest'
     container_name: 'pr-bot'
     env_file:
       - .env
