@@ -12,7 +12,6 @@ You need the following components :
 
 ## 🚀 Setup environment
 
-
 ### :whale: Docker
 
 Use docker-compose to initiate your local environment:

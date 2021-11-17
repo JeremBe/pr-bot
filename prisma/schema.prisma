@@ -36,6 +36,7 @@ model Reviewer {
   pull_request   PullRequest @relation(fields: [pull_requestId], references: [id])
   pull_requestId String
 
+  @@unique([authorId, pull_requestId])
   @@index([pull_requestId, status, authorId])
 }
 
