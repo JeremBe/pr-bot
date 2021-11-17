@@ -4,13 +4,16 @@
   "license": "MIT",
   "main": "app/app.js",
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register app/app.ts",
-    "dev": "nodemon -e ts -w ./app -x yarn start",
+    "start": "npx prisma generate && yarn db:migrate && ts-node -r tsconfig-paths/register app/app.ts",
+    "dev": "nodemon -e ts -w ./app -x ts-node -r tsconfig-paths/register app/app.ts",
     "lint": "eslint app/**/*.ts",
     "format": "eslint app/**/*.ts --fix",
+    "db:migrate": "npx prisma migrate deploy --preview-feature",
+    "db:init": "npx prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@prisma/client": "^3.4.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -25,6 +28,7 @@
     "eslint": "^8.1.0",
     "nodemon": "^2.0.14",
     "prettier": "^2.4.1",
+    "prisma": "3.4.1",
     "tsconfig-paths": "^3.11.0",
     "typescript": "^4.4.4"
   }

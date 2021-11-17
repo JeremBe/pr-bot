@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PullRequest {
+  id        String     @id @default(uuid())
+  name      String
+  status    String
+  url       String     @unique
+  repo      String
+  repo_url  String
+  author    String
+  authorId  Int
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Reviewer  Reviewer[]
+
+  @@index([repo_url, status, authorId])
+}
+
+model Reviewer {
+  id             String      @id @default(uuid())
+  author         String
+  authorId       Int
+  status         String
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  pull_request   PullRequest @relation(fields: [pull_requestId], references: [id])
+  pull_requestId String
+
+  @@index([pull_requestId, status, authorId])
+}
+
+model BlacklistedAuthor {
+  id        String   @id @default(uuid())
+  author    String
+  authorId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([authorId])
+}
