@@ -12,12 +12,13 @@ You need the following components :
 
 ## 🚀 Setup environment
 
+
 ### :whale: Docker
 
 Use docker-compose to initiate your local environment:
 
 ```
-docker-compose up
+docker-compose up -d
 ```
 
 This should create containers for **PostgreSQL**. The data for this container is stored locally
