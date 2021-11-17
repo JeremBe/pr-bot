@@ -38,11 +38,11 @@ export async function pullRequestController(req: Request<unknown, unknown, PullR
       create: pullRequest,
     })
 
-    return res.status(200).json()
+    res.status(200).json()
   } catch (error) {
     console.log('[app/controllers/webhooks/pull-request#pullRequestController] error')
     console.log(error)
 
-    return res.status(200).json()
+    res.status(200).json()
   }
 }
