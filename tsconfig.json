@@ -10,10 +10,10 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@routes/*": ["app/routes/*"],
-      "@services/*": ["app/services/*"],
-      "@controllers/*": ["app/controllers/*"],
-      "@core/*": ["app/core/*"],
+      "@routes/*": ["src/routes/*"],
+      "@services/*": ["src/services/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@core/*": ["src/core/*"],
     },
     /* Strict Checks */
     "alwaysStrict": true,
@@ -39,6 +39,6 @@
     /** Types Resolutions */
     "typeRoots": ["./@types", "./node_modules/@types"]
   },
-  "include": ["app/**/*.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"],
 }
