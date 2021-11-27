@@ -15,6 +15,7 @@
       "@controllers/*": ["app/controllers/*"],
       "@core/*": ["app/core/*"],
       "@types": ["./@types"],
+      "@config": ["app/config.ts"],
     },
     /* Strict Checks */
     "alwaysStrict": true,
