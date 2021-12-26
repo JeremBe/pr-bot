@@ -1,10 +1,13 @@
 import { Request, Response } from 'express'
 
 import { database } from '@core/database'
+import { WebhookPullRequest } from './pull-request.types'
+import { notifyPullRequest, notifyReview } from '@core/notify'
 
-import { PullRequest } from './pull-request.types'
-
-export async function pullRequestController(req: Request<unknown, unknown, PullRequest, unknown>, res: Response) {
+export async function pullRequestController(
+  req: Request<unknown, unknown, WebhookPullRequest, unknown>,
+  res: Response,
+) {
   try {
     const { body: webhook } = req
 
@@ -27,7 +30,7 @@ export async function pullRequestController(req: Request<unknown, unknown, PullR
     console.log('[app/controllers/webhooks/pull-request#pullRequestController] payload')
     console.log(pullRequest)
 
-    await database.pullRequest.upsert({
+    const model = await database.pullRequest.upsert({
       where: {
         url: pullRequest.url,
       },
@@ -36,6 +39,28 @@ export async function pullRequestController(req: Request<unknown, unknown, PullR
       },
       create: pullRequest,
     })
+
+    if (webhook.action === 'review_requested') {
+      console.log('[app/controllers/webhooks/pull-request#pullRequestController] review_requested')
+
+      await database.reviewer.update({
+        where: {
+          authorId_pull_requestId: {
+            authorId: webhook.requested_reviewer.id,
+            pull_requestId: model.id,
+          },
+        },
+        data: {
+          status: 'review_requested',
+        },
+      })
+
+      await notifyReview(model)
+
+      return res.status(200).json()
+    }
+
+    await notifyPullRequest(model, webhook)
 
     return res.status(200).json()
   } catch (error) {

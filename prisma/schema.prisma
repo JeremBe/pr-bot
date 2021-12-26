@@ -30,7 +30,7 @@ model Reviewer {
   id             String      @id @default(uuid())
   author         String
   authorId       Int
-  status         String
+  status         Satus
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
   pull_request   PullRequest @relation(fields: [pull_requestId], references: [id])
@@ -38,6 +38,13 @@ model Reviewer {
 
   @@unique([authorId, pull_requestId])
   @@index([pull_requestId, status, authorId])
+}
+
+enum Satus {
+  approved
+  changes_requested
+  commented
+  review_requested
 }
 
 model BlacklistedAuthor {

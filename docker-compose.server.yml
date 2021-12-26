@@ -26,6 +26,8 @@ services:
       - .env
     environment:
       DATABASE_URL: 'postgres://postgres@postgres/prBot?connect_timeout=300'
+      SLACK_TOKEN: '${SLACK_TOKEN}'
+      SLACK_SIGNING_SECRET: '${SLACK_SIGNING_SECRET}'
     ports:
       - 5000:5000
     links:
