@@ -1,9 +1,8 @@
 import { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
+
+import { database } from '@core/database'
 
 import { PullRequest } from './pull-request.types'
-
-const prisma = new PrismaClient()
 
 export async function pullRequestController(req: Request<unknown, unknown, PullRequest, unknown>, res: Response) {
   try {
@@ -28,7 +27,7 @@ export async function pullRequestController(req: Request<unknown, unknown, PullR
     console.log('[app/controllers/webhooks/pull-request#pullRequestController] payload')
     console.log(pullRequest)
 
-    await prisma.pullRequest.upsert({
+    await database.pullRequest.upsert({
       where: {
         url: pullRequest.url,
       },

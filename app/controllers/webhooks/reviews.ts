@@ -1,15 +1,14 @@
 import { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
+
+import { database } from '@core/database'
 
 import { PullRequestReview } from './reviews.types'
-
-const prisma = new PrismaClient()
 
 export async function reviewsController(req: Request<unknown, unknown, PullRequestReview, unknown>, res: Response) {
   try {
     const { body: webhook } = req
 
-    const pullRequest = await prisma.pullRequest.findUnique({
+    const pullRequest = await database.pullRequest.findUnique({
       where: {
         url: webhook.pull_request.html_url,
       },
@@ -32,7 +31,7 @@ export async function reviewsController(req: Request<unknown, unknown, PullReque
     console.log('[app/controllers/webhooks/reviews#reviewsController] payload')
     console.log(review)
 
-    await prisma.reviewer.upsert({
+    await database.reviewer.upsert({
       where: {
         authorId_pull_requestId: {
           pull_requestId: review.pull_requestId,

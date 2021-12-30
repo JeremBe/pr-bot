@@ -8,13 +8,13 @@
     "incremental": true,
     "outDir": "dist",
     "sourceMap": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@routes/*": ["app/routes/*"],
-      "@services/*": ["app/services/*"],
-      "@controllers/*": ["app/controllers/*"],
-      "@core/*": ["app/core/*"],
-      "@types": ["./@types"],
+      "@routes/*": ["./app/routes/*"],
+      "@services/*": ["./app/services/*"],
+      "@controllers/*": ["./app/controllers/*"],
+      "@core/*": ["./app/core/*"],
+      "@types": ["./@types"]
     },
     /* Strict Checks */
     "alwaysStrict": true,
@@ -41,5 +41,5 @@
     "typeRoots": ["./@types", "./node_modules/@types"]
   },
   "include": ["app/**/*.ts"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }
