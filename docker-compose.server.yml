@@ -22,8 +22,6 @@ services:
     build: .
     image: 'pr-bot:latest'
     container_name: 'pr-bot'
-    env_file:
-      - .env
     environment:
       DATABASE_URL: 'postgres://postgres@postgres/prBot?connect_timeout=300'
       SLACK_TOKEN: '${SLACK_TOKEN}'
