@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 
 import { database } from '@core/database'
+import { notifyReview } from '@core/notify'
 
 import { PullRequestReview } from './reviews.types'
 
@@ -43,6 +44,8 @@ export async function reviewsController(req: Request<unknown, unknown, PullReque
       },
       create: review,
     })
+
+    await notifyReview(pullRequest)
 
     return res.status(200).json()
   } catch (error) {

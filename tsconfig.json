@@ -14,7 +14,9 @@
       "@services/*": ["./app/services/*"],
       "@controllers/*": ["./app/controllers/*"],
       "@core/*": ["./app/core/*"],
-      "@types": ["./@types"]
+      "@constants/*": ["./app/constants/*"],
+      "@types": ["./@types"],
+      "@config": ["./app/config.ts"],
     },
     /* Strict Checks */
     "alwaysStrict": true,

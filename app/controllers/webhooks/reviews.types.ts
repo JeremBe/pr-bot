@@ -36,7 +36,7 @@ export interface PullRequestReviewReview {
   user: PullRequestReviewPullRequestReviewPullRequestReviewPullRequestReviewUser
   body: string
   submitted_at: string
-  state: string
+  state: 'approved' | 'changes_requested' | 'commented'
   html_url: string
   pull_request_url: string
   _links: PullRequestReviewPullRequestReview_link
@@ -351,7 +351,7 @@ export interface PullRequestReviewPullRequestReviewPull_request {
   patch_url: string
   issue_url: string
   number: number
-  state: string
+  state: 'approved' | 'changes_requested' | 'commented'
   locked: boolean
   title: string
   user: PullRequestReviewPullRequestReviewPullRequestReviewPullRequestReviewUser
