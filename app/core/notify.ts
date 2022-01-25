@@ -20,7 +20,7 @@ export async function notifyPullRequest(pullRequest: PullRequest, webhook: Webho
       }
 
       break
-    case 'opened':
+    case 'open':
       const isCreated = pullRequest.updatedAt.getTime() - pullRequest.createdAt.getTime() < 5
       console.log('[app/core/notify#notifyPullRequest] isCreated', isCreated)
 
