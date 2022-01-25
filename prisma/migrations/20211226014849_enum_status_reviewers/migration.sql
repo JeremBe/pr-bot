@@ -5,11 +5,11 @@
 
 */
 -- CreateEnum
-CREATE TYPE "Satus" AS ENUM ('approved', 'changes_requested', 'commented', 'review_requested');
+CREATE TYPE "Status" AS ENUM ('approved', 'changes_requested', 'commented', 'review_requested');
 
 -- AlterTable
 ALTER TABLE "Reviewer" DROP COLUMN "status",
-ADD COLUMN     "status" "Satus" NOT NULL;
+ADD COLUMN     "status" "Status" NOT NULL;
 
 -- CreateIndex
 CREATE INDEX "Reviewer_pull_requestId_status_authorId_idx" ON "Reviewer"("pull_requestId", "status", "authorId");
