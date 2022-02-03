@@ -19,6 +19,13 @@ export async function reviewsController(req: Request<unknown, unknown, PullReque
       console.log(
         `[app/controllers/webhooks/reviews#reviewsController] pull request not found: url ${webhook.pull_request.html_url}`,
       )
+
+      return res.status(200).json()
+    }
+
+    if (pullRequest.authorId === Number(webhook.review.user.id)) {
+      console.log('[app/controllers/webhooks/reviews#reviewsController] author of review is the owner of pull request')
+
       return res.status(200).json()
     }
 
@@ -31,6 +38,21 @@ export async function reviewsController(req: Request<unknown, unknown, PullReque
 
     console.log('[app/controllers/webhooks/reviews#reviewsController] payload')
     console.log(review)
+
+    const currentReview = await database.reviewer.findUnique({
+      where: {
+        authorId_pull_requestId: {
+          pull_requestId: review.pull_requestId,
+          authorId: review.authorId,
+        },
+      },
+    })
+
+    if (review.status === 'commented' && currentReview) {
+      console.log('[app/controllers/webhooks/reviews#reviewsController] not erase last review')
+
+      return res.status(200).json()
+    }
 
     await database.reviewer.upsert({
       where: {
