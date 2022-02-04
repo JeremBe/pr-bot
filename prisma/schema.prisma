@@ -18,6 +18,7 @@ model PullRequest {
   repo      String
   repo_url  String
   author    String
+  user      User?      @relation(fields: [authorId], references: [authorId])
   authorId  Int
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -29,6 +30,7 @@ model PullRequest {
 model Reviewer {
   id             String      @id @default(uuid())
   author         String
+  user           User?       @relation(fields: [authorId], references: [authorId])
   authorId       Int
   status         Status
   createdAt      DateTime    @default(now())
@@ -54,5 +56,18 @@ model BlacklistedAuthor {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([authorId])
+}
+
+model User {
+  id        String   @id @default(uuid())
+  nickname  String
+  authorId  Int      @unique
+  slackId   String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Reviewer    Reviewer[]
+  PullRequest PullRequest[]
   @@index([authorId])
 }
