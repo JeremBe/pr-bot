@@ -17,6 +17,8 @@
       "@constants/*": ["./app/constants/*"],
       "@types": ["./@types"],
       "@config": ["./app/config.ts"],
+      "@utils/*": ["./app/utils/*"],
+      "@middlewares/*": ["./app/middlewares/*"],
     },
     /* Strict Checks */
     "alwaysStrict": true,
