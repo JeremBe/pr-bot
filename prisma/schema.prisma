@@ -11,30 +11,36 @@ datasource db {
 }
 
 model PullRequest {
-  id        String     @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
   status    String
-  url       String     @unique
+  url       String   @unique
   repo      String
   repo_url  String
   author    String
   authorId  Int
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Reviewer  Reviewer[]
+  teamId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   SlackUser? @relation(fields: [authorId, teamId], references: [authorId, teamId])
+  review Review[]
 
   @@index([repo_url, status, authorId])
 }
 
-model Reviewer {
-  id             String      @id @default(uuid())
+model Review {
+  id             String   @id @default(uuid())
   author         String
   authorId       Int
   status         Status
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-  pull_request   PullRequest @relation(fields: [pull_requestId], references: [id])
   pull_requestId String
+  teamId         String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user         SlackUser?  @relation(fields: [authorId, teamId], references: [authorId, teamId])
+  pull_request PullRequest @relation(fields: [pull_requestId], references: [id])
 
   @@unique([authorId, pull_requestId])
   @@index([pull_requestId, status, authorId])
@@ -55,4 +61,30 @@ model BlacklistedAuthor {
   updatedAt DateTime @updatedAt
 
   @@index([authorId])
+}
+
+model SlackUser {
+  slackId   String   @unique
+  nickname  String
+  authorId  Int
+  teamId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  slackTeam    SlackTeam     @relation(fields: [teamId], references: [teamId])
+  pullRequests PullRequest[]
+  reviews      Review[]
+
+  @@unique([teamId, authorId])
+  @@index([authorId])
+}
+
+model SlackTeam {
+  secret    String   @unique @default(uuid())
+  teamId    String   @unique
+  signature String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  slackUsers SlackUser[]
 }
