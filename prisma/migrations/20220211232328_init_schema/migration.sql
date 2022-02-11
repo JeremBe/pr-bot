@@ -57,7 +57,6 @@ CREATE TABLE "SlackUser" (
 CREATE TABLE "SlackTeam" (
     "secret" TEXT NOT NULL,
     "teamId" TEXT NOT NULL,
-    "signature" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL
 );
