@@ -1,9 +1,9 @@
 import { createEventAdapter } from '@slack/events-api'
-import { WebClient } from '@slack/web-api'
 
 import { config } from '@config'
+import { getWebClient } from '@core/slack'
 
-const webClient = new WebClient(config.slack.token)
+const webClient = getWebClient()
 
 export const slackEvents = createEventAdapter(config.slack.signingSecret)
 
