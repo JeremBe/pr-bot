@@ -4,8 +4,12 @@ import { database } from '@core/database'
 import { notifyReview } from '@core/notify'
 
 import { PullRequestReview } from './reviews.types'
+import { TeamIdVerified } from '@middlewares/github'
 
-export async function reviewsController(req: Request<unknown, unknown, PullRequestReview, unknown>, res: Response) {
+export async function reviewsController(
+  req: TeamIdVerified & Request<unknown, unknown, PullRequestReview, unknown>,
+  res: Response,
+) {
   try {
     const { body: webhook } = req
 
@@ -34,12 +38,13 @@ export async function reviewsController(req: Request<unknown, unknown, PullReque
       authorId: webhook.review.user.id,
       status: webhook.review.state,
       pull_requestId: pullRequest.id,
+      teamId: req.teamId,
     }
 
     console.log('[app/controllers/webhooks/reviews#reviewsController] payload')
     console.log(review)
 
-    const currentReview = await database.reviewer.findUnique({
+    const currentReview = await database.review.findUnique({
       where: {
         authorId_pull_requestId: {
           pull_requestId: review.pull_requestId,
@@ -54,7 +59,7 @@ export async function reviewsController(req: Request<unknown, unknown, PullReque
       return res.status(200).json()
     }
 
-    await database.reviewer.upsert({
+    await database.review.upsert({
       where: {
         authorId_pull_requestId: {
           pull_requestId: review.pull_requestId,

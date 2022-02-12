@@ -3,9 +3,10 @@ import { Request, Response } from 'express'
 import { database } from '@core/database'
 import { WebhookPullRequest } from './pull-request.types'
 import { notifyPullRequest, notifyReview } from '@core/notify'
+import { TeamIdVerified } from '@middlewares/github'
 
 export async function pullRequestController(
-  req: Request<unknown, unknown, WebhookPullRequest, unknown>,
+  req: TeamIdVerified & Request<unknown, unknown, WebhookPullRequest, unknown>,
   res: Response,
 ) {
   try {
@@ -25,6 +26,7 @@ export async function pullRequestController(
       repo: webhook.repository.name,
       repo_url: webhook.repository.html_url,
       status: webhook.pull_request.state,
+      teamId: req.teamId,
     }
 
     console.log('[app/controllers/webhooks/pull-request#pullRequestController] payload')
@@ -43,7 +45,7 @@ export async function pullRequestController(
     if (webhook.action === 'review_requested') {
       console.log('[app/controllers/webhooks/pull-request#pullRequestController] review_requested')
 
-      await database.reviewer.update({
+      await database.review.update({
         where: {
           authorId_pull_requestId: {
             authorId: webhook.requested_reviewer.id,
