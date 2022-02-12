@@ -85,11 +85,14 @@ model SlackTeam {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  slackUsers SlackUser[]
+  slackUsers               SlackUser[]
+  SlackChannelSubscription SlackChannelSubscription[]
 }
 
 model SlackChannelSubscription {
   channelId String @unique
   teamId    String
   repo_url  String
+
+  slackTeam SlackTeam @relation(fields: [teamId], references: [teamId])
 }
