@@ -87,3 +87,9 @@ model SlackTeam {
 
   slackUsers SlackUser[]
 }
+
+model SlackChannelSubscription {
+  channelId String @unique
+  teamId    String
+  repo_url  String
+}
