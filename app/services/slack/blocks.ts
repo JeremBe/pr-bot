@@ -1,6 +1,6 @@
 import { PullRequest, Review } from '@prisma/client'
 
-import { EMOJI } from '@constants/emojis'
+import { EMOJI, RANDOM_SUCCESS_EMOJI } from '@constants/emojis'
 
 export function blockSection(message: string) {
   return [
@@ -54,4 +54,10 @@ export function blockPullRequestList(pullRequests: PullRequestWithReviews[]) {
   const blocks = pullRequests.map((pullRequest) => blockReview(pullRequest, pullRequest.reviews)).flat()
 
   return [...blockSection(`🚀 *${pullRequests.length} PR(s) in queue*`), ...blocks]
+}
+
+export function blockPullRequestsUser(pullRequests: PullRequestWithReviews[]) {
+  const blocks = pullRequests.map((pullRequest) => blockReview(pullRequest, pullRequest.reviews)).flat()
+
+  return [...blockSection(`${RANDOM_SUCCESS_EMOJI()} *You have ${pullRequests.length} PR(s) in queue*`), ...blocks]
 }
