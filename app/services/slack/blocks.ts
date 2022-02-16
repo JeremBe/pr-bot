@@ -1,4 +1,4 @@
-import { PullRequest, Reviewer } from '@prisma/client'
+import { PullRequest, Review } from '@prisma/client'
 
 import { EMOJI } from '@constants/emojis'
 
@@ -33,16 +33,25 @@ const statusReview = {
   review_requested: EMOJI.REVIEW,
 }
 
-function getReviewsStates(reviewers: Reviewer[]) {
-  return reviewers.reduce((acc, cur) => {
+function getReviewsStates(reviews: Review[]) {
+  return reviews.reduce((acc, cur) => {
     const state = statusReview[cur.status]
 
     return `${acc}(${cur.author}: ${state}) `
   }, '')
 }
 
-export function blockReview(pullRequest: PullRequest, reviewers: Reviewer[]) {
-  const message = `• <${pullRequest.url}| *[${pullRequest.repo}] ${pullRequest.name}*> ${getReviewsStates(reviewers)}`
+export function blockReview(pullRequest: PullRequest, reviews: Review[]) {
+  const message = `• <${pullRequest.url}| *[${pullRequest.repo}] ${pullRequest.name}*> ${getReviewsStates(reviews)}`
 
   return blockSection(message)
+}
+
+type PullRequestWithReviews = PullRequest & {
+  reviews: Review[]
+}
+export function blockPullRequestList(pullRequests: PullRequestWithReviews[]) {
+  const blocks = pullRequests.map((pullRequest) => blockReview(pullRequest, pullRequest.reviews)).flat()
+
+  return [...blockSection(`🚀 *${pullRequests.length} PR(s) in queue*`), ...blocks]
 }

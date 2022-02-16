@@ -23,8 +23,8 @@ model PullRequest {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user   SlackUser? @relation(fields: [authorId, teamId], references: [authorId, teamId])
-  review Review[]
+  user    SlackUser? @relation(fields: [authorId, teamId], references: [authorId, teamId])
+  reviews Review[]
 
   @@index([repo_url, status, authorId])
 }
@@ -90,9 +90,10 @@ model SlackTeam {
 }
 
 model SlackChannelSubscription {
-  channelId String @unique
+  channelId String
   teamId    String
   repo_url  String
 
   slackTeam SlackTeam @relation(fields: [teamId], references: [teamId])
+  @@unique([channelId, repo_url])
 }

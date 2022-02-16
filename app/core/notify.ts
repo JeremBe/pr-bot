@@ -6,9 +6,9 @@ import { WebhookPullRequest } from '@controllers/webhooks/pull-request.types'
 const prisma = new PrismaClient()
 
 export async function notifyReview(pullRequest: PullRequest) {
-  const reviewers = await prisma.reviewer.findMany({ where: { pull_requestId: pullRequest.id } })
+  const reviews = await prisma.review.findMany({ where: { pull_requestId: pullRequest.id } })
 
-  await notifyReviews(pullRequest, reviewers)
+  await notifyReviews(pullRequest, reviews)
 }
 
 export async function notifyPullRequest(pullRequest: PullRequest, webhook: WebhookPullRequest) {

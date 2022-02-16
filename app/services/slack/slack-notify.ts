@@ -1,10 +1,9 @@
-import { WebClient } from '@slack/web-api'
+import { PullRequest, Review } from '@prisma/client'
 
-import { PullRequest, Reviewer } from '@prisma/client'
+import { getWebClient } from '@core/slack'
 import { blockPullRequestCreated, blockPullRequestMerged, blockReview } from './blocks'
-import { config } from '@config'
 
-const webClient = new WebClient(config.slack.token)
+const webClient = getWebClient()
 
 export async function notifyPullRequestCreated(pullRequest: PullRequest) {
   console.log('[app/services/slack/slack-notify#notifyPullRequestCreated]')
@@ -24,11 +23,11 @@ export async function notifyPullRequestMerged(pullRequest: PullRequest) {
   await webClient.chat.postMessage({ blocks: block, text: 'message', channel: 'C02N7GB1JUX' })
 }
 
-export async function notifyReviews(pullRequest: PullRequest, reviewers: Reviewer[]) {
+export async function notifyReviews(pullRequest: PullRequest, reviews: Review[]) {
   console.log('[app/services/slack/slack-notify#notifyReviews]')
   console.log(pullRequest)
 
-  const block = blockReview(pullRequest, reviewers)
+  const block = blockReview(pullRequest, reviews)
 
   await webClient.chat.postMessage({ blocks: block, text: 'message', channel: 'C02N7GB1JUX' })
 }
