@@ -23,7 +23,6 @@ model PullRequest {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user    SlackUser? @relation(fields: [authorId, teamId], references: [authorId, teamId])
   reviews Review[]
 
   @@index([repo_url, status, authorId])
@@ -39,7 +38,6 @@ model Review {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  user         SlackUser?  @relation(fields: [authorId, teamId], references: [authorId, teamId])
   pull_request PullRequest @relation(fields: [pull_requestId], references: [id])
 
   @@unique([authorId, pull_requestId])
@@ -71,9 +69,7 @@ model SlackUser {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  slackTeam    SlackTeam     @relation(fields: [teamId], references: [teamId])
-  pullRequests PullRequest[]
-  reviews      Review[]
+  slackTeam SlackTeam @relation(fields: [teamId], references: [teamId])
 
   @@unique([teamId, authorId])
   @@index([authorId])
