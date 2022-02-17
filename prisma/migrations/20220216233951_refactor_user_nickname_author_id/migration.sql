@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "SlackUser" ALTER COLUMN "nickname" DROP NOT NULL,
+ALTER COLUMN "authorId" DROP NOT NULL;

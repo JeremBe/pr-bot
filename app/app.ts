@@ -15,6 +15,7 @@ app.use(
   }),
 )
 
+app.use(express.urlencoded({ extended: true, verify: rawBodySaver }))
 app.use(
   express.json({
     verify: rawBodySaver,

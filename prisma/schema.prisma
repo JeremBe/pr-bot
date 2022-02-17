@@ -23,8 +23,7 @@ model PullRequest {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user   SlackUser? @relation(fields: [authorId, teamId], references: [authorId, teamId])
-  review Review[]
+  reviews Review[]
 
   @@index([repo_url, status, authorId])
 }
@@ -39,7 +38,6 @@ model Review {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  user         SlackUser?  @relation(fields: [authorId, teamId], references: [authorId, teamId])
   pull_request PullRequest @relation(fields: [pull_requestId], references: [id])
 
   @@unique([authorId, pull_requestId])
@@ -65,15 +63,13 @@ model BlacklistedAuthor {
 
 model SlackUser {
   slackId   String   @unique
-  nickname  String
-  authorId  Int
+  nickname  String?
+  authorId  Int?
   teamId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  slackTeam    SlackTeam     @relation(fields: [teamId], references: [teamId])
-  pullRequests PullRequest[]
-  reviews      Review[]
+  slackTeam SlackTeam @relation(fields: [teamId], references: [teamId])
 
   @@unique([teamId, authorId])
   @@index([authorId])
@@ -90,9 +86,10 @@ model SlackTeam {
 }
 
 model SlackChannelSubscription {
-  channelId String @unique
+  channelId String
   teamId    String
   repo_url  String
 
   slackTeam SlackTeam @relation(fields: [teamId], references: [teamId])
+  @@unique([channelId, repo_url])
 }
