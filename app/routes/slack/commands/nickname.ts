@@ -3,15 +3,15 @@ import { Request, Response } from 'express'
 import { blockError } from '@constants/blockError'
 import { CommandsBody } from './command.type'
 import { database } from '@core/database'
-import { blockAuthorId, blockUserInfo } from '@services/slack/blocks'
+import { blockNickname, blockUserInfo } from '@core/slack-blocks'
 
-export async function authorId(req: Request<unknown, unknown, CommandsBody>, res: Response) {
+export async function nickname(req: Request<unknown, unknown, CommandsBody>, res: Response) {
   const { body } = req
 
   try {
-    const authorId = Number(body.text.trim())
+    const nickname = body.text.trim()
 
-    if (!authorId) {
+    if (!nickname) {
       return res.status(200).json({ blocks: blockUserInfo() })
     }
 
@@ -22,16 +22,16 @@ export async function authorId(req: Request<unknown, unknown, CommandsBody>, res
       create: {
         slackId: body.user_id,
         teamId: body.team_id,
-        authorId,
+        nickname,
       },
       update: {
-        authorId,
+        nickname,
       },
     })
 
-    return res.status(200).json({ blocks: blockAuthorId() })
+    return res.status(200).json({ blocks: blockNickname() })
   } catch (error) {
-    console.log('[app/controllers/slack/commands/authorId.ts#authorId] Error ', { body, error })
+    console.log('[app/controllers/slack/commands/nickname.ts#nickname] Error ', { body, error })
 
     return res.status(200).json(blockError)
   }

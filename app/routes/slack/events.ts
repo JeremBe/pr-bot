@@ -1,7 +1,7 @@
 import { createEventAdapter } from '@slack/events-api'
 
 import { config } from '@config'
-import { getWebClient } from '@core/slack'
+import { getWebClient } from '@services/slack/slack'
 
 const webClient = getWebClient()
 
