@@ -9,6 +9,8 @@ import { slackEvents } from '@controllers/slack/events'
 import { prBot } from '@controllers/slack/commands/pr-bot'
 import { subscribe } from '@controllers/slack/commands/subscribe'
 import { pr } from '@controllers/slack/commands/pr'
+import { nickname } from '@controllers/slack/commands/nickname'
+import { authorId } from '@controllers/slack/commands/authorId'
 
 const router = express.Router()
 
@@ -25,6 +27,8 @@ router.use(
 router.post('/slack/commands/pr-bot', prBot)
 router.post('/slack/commands/subscribe', subscribe)
 router.post('/slack/commands/pr', pr)
+router.post('/slack/commands/author', authorId)
+router.post('/slack/commands/nickname', nickname)
 
 // WEBHOOKS
 router.post('/webhooks/pull-request', githubMiddleware, pullRequestController)

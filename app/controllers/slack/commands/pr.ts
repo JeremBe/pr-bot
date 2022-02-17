@@ -3,25 +3,29 @@ import { Request, Response } from 'express'
 import { blockError } from '@constants/blockError'
 import { database } from '@core/database'
 import { CommandsBody } from './command.type'
-import { blockPullRequestList, blockPullRequestsUser } from '@services/slack/blocks'
+import { blockPullRequestList, blockPullRequestsUser, blockUserInfo } from '@services/slack/blocks'
 
 async function getBlocksUser(teamId: string, slackId: string, repositoriesUrl: string[]) {
   const user = await database.slackUser.findUnique({ where: { slackId } })
 
-  const pullRequests = await database.pullRequest.findMany({
-    where: {
-      repo_url: {
-        in: repositoriesUrl,
+  if (user?.authorId) {
+    const pullRequests = await database.pullRequest.findMany({
+      where: {
+        repo_url: {
+          in: repositoriesUrl,
+        },
+        teamId,
+        authorId: user.authorId,
       },
-      teamId,
-      authorId: user?.authorId,
-    },
-    include: {
-      reviews: true,
-    },
-  })
+      include: {
+        reviews: true,
+      },
+    })
 
-  return blockPullRequestsUser(pullRequests)
+    return blockPullRequestsUser(pullRequests)
+  }
+
+  return blockUserInfo()
 }
 
 async function getBlocksPullRequestsList(teamId: string, repositoriesUrl: string[]) {

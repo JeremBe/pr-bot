@@ -63,8 +63,8 @@ model BlacklistedAuthor {
 
 model SlackUser {
   slackId   String   @unique
-  nickname  String
-  authorId  Int
+  nickname  String?
+  authorId  Int?
   teamId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
