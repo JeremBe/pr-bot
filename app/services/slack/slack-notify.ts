@@ -1,7 +1,7 @@
 import { PullRequest, Review } from '@prisma/client'
 
-import { getWebClient } from '@core/slack'
-import { blockPullRequestCreated, blockPullRequestMerged, blockReview } from './blocks'
+import { getWebClient } from '@services/slack/slack'
+import { blockPullRequestCreated, blockPullRequestMerged, blockReview } from '@core/slack-blocks'
 
 const webClient = getWebClient()
 

@@ -2,7 +2,7 @@
   "name": "pr-bot",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "app/app.ts",
+  "main": "app/server.ts",
   "scripts": {
     "start": "yarn prisma generate && yarn db:migrate && yarn ts .",
     "dev": "nodemon -e ts -w ./app -x yarn ts .",

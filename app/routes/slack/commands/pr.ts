@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { blockError } from '@constants/blockError'
 import { database } from '@core/database'
 import { CommandsBody } from './command.type'
-import { blockPullRequestList, blockPullRequestsUser, blockUserInfo } from '@services/slack/blocks'
+import { blockPullRequestList, blockPullRequestsUser, blockUserInfo } from '@core/slack-blocks'
 
 async function getBlocksUser(teamId: string, slackId: string, repositoriesUrl: string[]) {
   const user = await database.slackUser.findUnique({ where: { slackId } })
