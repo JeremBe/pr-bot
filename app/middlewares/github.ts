@@ -3,8 +3,8 @@ import crypto from 'crypto'
 
 import { RawBody } from '@utils/rawBodySaver'
 import { getSignature } from '@utils/signature'
-import { WebhookPullRequest } from '@controllers/webhooks/pull-request.types'
-import { PullRequestReview } from '@controllers/webhooks/reviews.types'
+import { WebhookPullRequest } from '@routes/webhooks/pull-request.types'
+import { PullRequestReview } from '@routes/webhooks/reviews.types'
 import { database } from '@core/database'
 
 const sigHeaderName = 'X-Hub-Signature-256'

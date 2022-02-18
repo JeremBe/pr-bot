@@ -1,7 +1,7 @@
 import { PullRequest, PrismaClient } from '@prisma/client'
 
 import { notifyPullRequestCreated, notifyPullRequestMerged, notifyReviews } from '@services/slack/slack-notify'
-import { WebhookPullRequest } from '@controllers/webhooks/pull-request.types'
+import { WebhookPullRequest } from '@routes/webhooks/pull-request.types'
 
 const prisma = new PrismaClient()
 
