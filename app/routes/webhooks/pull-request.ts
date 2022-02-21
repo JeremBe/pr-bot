@@ -18,6 +18,15 @@ export async function pullRequestController(
       return res.status(200).json()
     }
 
+    const slackUser = await database.slackUser.findUnique({
+      where: {
+        teamId_authorId: {
+          authorId: webhook.pull_request.user.id,
+          teamId: req.teamId,
+        },
+      },
+    })
+
     const pullRequest = {
       url: webhook.pull_request.html_url,
       name: webhook.pull_request.title,
@@ -27,6 +36,7 @@ export async function pullRequestController(
       repo_url: webhook.repository.html_url,
       status: webhook.pull_request.state,
       teamId: req.teamId,
+      slackUserId: slackUser?.slackId,
     }
 
     console.log('[app/controllers/webhooks/pull-request#pullRequestController] payload')
@@ -38,6 +48,7 @@ export async function pullRequestController(
       },
       update: {
         status: pullRequest.status,
+        slackUserId: slackUser?.slackId,
       },
       create: pullRequest,
     })
@@ -54,6 +65,7 @@ export async function pullRequestController(
         },
         data: {
           status: 'review_requested',
+          slackUserId: slackUser?.slackId,
         },
       })
 

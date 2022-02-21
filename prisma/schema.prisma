@@ -11,19 +11,22 @@ datasource db {
 }
 
 model PullRequest {
-  id        String   @id @default(uuid())
-  name      String
-  status    String
-  url       String   @unique
-  repo      String
-  repo_url  String
-  author    String
-  authorId  Int
-  teamId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  name        String
+  status      String
+  url         String   @unique
+  repo        String
+  repo_url    String
+  author      String
+  authorId    Int
+  teamId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  slackUserId String?
 
-  reviews Review[]
+  slackUser SlackUser? @relation(fields: [slackUserId], references: [slackId])
+  reviews   Review[]
+
 
   @@index([repo_url, status, authorId])
 }
@@ -37,7 +40,9 @@ model Review {
   teamId         String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  slackUserId    String?
 
+  slackUser    SlackUser?  @relation(fields: [slackUserId], references: [slackId])
   pull_request PullRequest @relation(fields: [pull_requestId], references: [id])
 
   @@unique([authorId, pull_requestId])
@@ -69,7 +74,9 @@ model SlackUser {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  slackTeam SlackTeam @relation(fields: [teamId], references: [teamId])
+  slackTeam   SlackTeam     @relation(fields: [teamId], references: [teamId])
+  Review      Review[]
+  PullRequest PullRequest[]
 
   @@unique([teamId, authorId])
   @@index([authorId])

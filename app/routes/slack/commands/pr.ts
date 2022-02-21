@@ -18,7 +18,12 @@ async function getBlocksUser(teamId: string, slackId: string, repositoriesUrl: s
         authorId: user.authorId,
       },
       include: {
-        reviews: true,
+        reviews: {
+          include: {
+            slackUser: true,
+          },
+        },
+        slackUser: true,
       },
     })
 
@@ -37,7 +42,12 @@ async function getBlocksPullRequestsList(teamId: string, repositoriesUrl: string
       teamId,
     },
     include: {
-      reviews: true,
+      reviews: {
+        include: {
+          slackUser: true,
+        },
+      },
+      slackUser: true,
     },
   })
 
