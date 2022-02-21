@@ -1,15 +1,19 @@
-import { PullRequest, Review, SlackChannelSubscription } from '@prisma/client'
+import { PullRequest, Review, SlackChannelSubscription, SlackUser } from '@prisma/client'
 
 import { getWebClient } from '@services/slack/slack'
 import { blockPullRequestCreated, blockPullRequestMerged, blockReview } from '@core/slack-blocks'
 
 const webClient = getWebClient()
 
-export async function notifyPullRequestCreated(pullRequest: PullRequest, channels: SlackChannelSubscription[]) {
+export async function notifyPullRequestCreated(
+  pullRequest: PullRequest,
+  user: SlackUser | null,
+  channels: SlackChannelSubscription[],
+) {
   console.log('[app/services/slack/slack-notify#notifyPullRequestCreated]')
   console.log(pullRequest)
 
-  const block = blockPullRequestCreated(pullRequest)
+  const block = blockPullRequestCreated(pullRequest, user)
 
   await Promise.all(
     channels.map((channel) =>
@@ -18,11 +22,15 @@ export async function notifyPullRequestCreated(pullRequest: PullRequest, channel
   )
 }
 
-export async function notifyPullRequestMerged(pullRequest: PullRequest, channels: SlackChannelSubscription[]) {
+export async function notifyPullRequestMerged(
+  pullRequest: PullRequest,
+  user: SlackUser | null,
+  channels: SlackChannelSubscription[],
+) {
   console.log('[app/services/slack/slack-notify#notifyPullRequestMerged]')
   console.log(pullRequest)
 
-  const block = blockPullRequestMerged(pullRequest)
+  const block = blockPullRequestMerged(pullRequest, user)
 
   await Promise.all(
     channels.map((channel) =>
@@ -31,11 +39,18 @@ export async function notifyPullRequestMerged(pullRequest: PullRequest, channels
   )
 }
 
-export async function notifyReviews(pullRequest: PullRequest, reviews: Review[], channels: SlackChannelSubscription[]) {
+export async function notifyReviews(
+  pullRequest: PullRequest,
+  user: SlackUser | null,
+  reviews: (Review & {
+    slackUser: SlackUser | null
+  })[],
+  channels: SlackChannelSubscription[],
+) {
   console.log('[app/services/slack/slack-notify#notifyReviews]')
   console.log(pullRequest)
 
-  const block = blockReview(pullRequest, reviews)
+  const block = blockReview(pullRequest, user, reviews)
 
   await Promise.all(
     channels.map((channel) =>

@@ -1,4 +1,4 @@
-import { PullRequest, Review } from '@prisma/client'
+import { PullRequest, Review, SlackUser } from '@prisma/client'
 
 import { EMOJI, RANDOM_SUCCESS_EMOJI } from '@constants/emojis'
 
@@ -18,14 +18,18 @@ export function blockDivider() {
   return { type: 'divider' }
 }
 
-export function blockPullRequestCreated(pullRequest: PullRequest) {
-  const message = `• <${pullRequest.url}| *[${pullRequest.repo}] ${pullRequest.name}*> ${EMOJI.PLEASE}`
+export function blockPullRequestCreated(pullRequest: PullRequest, user: SlackUser | null) {
+  const message = `${user?.nickname ?? pullRequest.author} - <${pullRequest.url}| *[${pullRequest.repo}] ${
+    pullRequest.name
+  }*> ${EMOJI.PLEASE}`
 
   return blockSection(message)
 }
 
-export function blockPullRequestMerged(pullRequest: PullRequest) {
-  const message = `• <${pullRequest.url}| *[${pullRequest.repo}] ${pullRequest.name}*> ${EMOJI.MERGE}`
+export function blockPullRequestMerged(pullRequest: PullRequest, user: SlackUser | null) {
+  const message = `${user?.nickname ?? pullRequest.author} - <${pullRequest.url}| *[${pullRequest.repo}] ${
+    pullRequest.name
+  }*> ${EMOJI.MERGE}`
 
   return blockSection(message)
 }
@@ -37,32 +41,51 @@ const statusReview = {
   review_requested: EMOJI.REVIEW,
 }
 
-function getReviewsStates(reviews: Review[]) {
+function getReviewsStates(
+  reviews: (Review & {
+    slackUser: SlackUser | null
+  })[],
+) {
   return reviews.reduce((acc, cur) => {
     const state = statusReview[cur.status]
 
-    return `${acc}(${cur.author}: ${state}) `
+    return `${acc}(${cur.slackUser?.nickname ?? cur.author}: ${state}) `
   }, '')
 }
 
-export function blockReview(pullRequest: PullRequest, reviews: Review[]) {
-  const message = `• <${pullRequest.url}| *[${pullRequest.repo}] ${pullRequest.name}*> ${getReviewsStates(reviews)}`
+export function blockReview(
+  pullRequest: PullRequest,
+  user: SlackUser | null,
+  reviews: (Review & {
+    slackUser: SlackUser | null
+  })[],
+) {
+  const message = `${user?.nickname ?? pullRequest.author} - <${pullRequest.url}| *[${pullRequest.repo}] ${
+    pullRequest.name
+  }*> ${getReviewsStates(reviews)}`
 
   return blockSection(message)
 }
 
 type PullRequestWithReviews = PullRequest & {
-  reviews: Review[]
+  reviews: (Review & {
+    slackUser: SlackUser | null
+  })[]
+  slackUser: SlackUser | null
 }
 
 export function blockPullRequestList(pullRequests: PullRequestWithReviews[]) {
-  const blocks = pullRequests.map((pullRequest) => blockReview(pullRequest, pullRequest.reviews)).flat()
+  const blocks = pullRequests
+    .map((pullRequest) => blockReview(pullRequest, pullRequest.slackUser, pullRequest.reviews))
+    .flat()
 
   return [...blockSection(`🚀 *${pullRequests.length} PR(s) in queue*`), ...blocks]
 }
 
 export function blockPullRequestsUser(pullRequests: PullRequestWithReviews[]) {
-  const blocks = pullRequests.map((pullRequest) => blockReview(pullRequest, pullRequest.reviews)).flat()
+  const blocks = pullRequests
+    .map((pullRequest) => blockReview(pullRequest, pullRequest.slackUser, pullRequest.reviews))
+    .flat()
 
   return [...blockSection(`${RANDOM_SUCCESS_EMOJI()} *You have ${pullRequests.length} PR(s) in queue*`), ...blocks]
 }
@@ -86,7 +109,7 @@ export function blockUserInfo() {
     blockSection('Just replace `githubUserName` with yours.'),
     blockSection('Then type command `/authorId your_user_id`'),
     blockDivider(),
-    blockSection('You can also add nickname 😎 !! \nType command `/authorId your_user_id`'),
+    blockSection('You can also add nickname 😎 !! \nType command `/authorId nickname`'),
   ]
 
   return blocks.flat()

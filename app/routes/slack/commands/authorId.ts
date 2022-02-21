@@ -29,6 +29,24 @@ export async function authorId(req: Request<unknown, unknown, CommandsBody>, res
       },
     })
 
+    await database.review.updateMany({
+      where: {
+        authorId,
+      },
+      data: {
+        slackUserId: body.user_id,
+      },
+    })
+
+    await database.pullRequest.updateMany({
+      where: {
+        authorId,
+      },
+      data: {
+        slackUserId: body.user_id,
+      },
+    })
+
     return res.status(200).json({ blocks: blockAuthorId() })
   } catch (error) {
     console.log('[app/controllers/slack/commands/authorId.ts#authorId] Error ', { body, error })

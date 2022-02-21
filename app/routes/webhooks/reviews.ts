@@ -33,12 +33,22 @@ export async function reviewsController(
       return res.status(200).json()
     }
 
+    const slackUser = await database.slackUser.findUnique({
+      where: {
+        teamId_authorId: {
+          authorId: webhook.review.user.id,
+          teamId: req.teamId,
+        },
+      },
+    })
+
     const review = {
       author: webhook.review.user.login,
       authorId: webhook.review.user.id,
       status: webhook.review.state,
       pull_requestId: pullRequest.id,
       teamId: req.teamId,
+      slackUserId: slackUser?.slackId,
     }
 
     console.log('[app/controllers/webhooks/reviews#reviewsController] payload')
@@ -68,6 +78,7 @@ export async function reviewsController(
       },
       update: {
         status: review.status,
+        slackUserId: slackUser?.slackId,
       },
       create: review,
     })
