@@ -16,6 +16,7 @@ async function getBlocksUser(teamId: string, slackId: string, repositoriesUrl: s
         },
         teamId,
         authorId: user.authorId,
+        status: 'open',
       },
       include: {
         reviews: {
@@ -39,6 +40,7 @@ async function getBlocksPullRequestsList(teamId: string, repositoriesUrl: string
       repo_url: {
         in: repositoriesUrl,
       },
+      status: 'open',
       teamId,
     },
     include: {

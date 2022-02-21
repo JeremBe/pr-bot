@@ -54,7 +54,7 @@ export async function notifyPullRequest(pullRequest: PullRequest, webhook: Webho
 
       break
     case 'open':
-      const isCreated = pullRequest.updatedAt.getTime() - pullRequest.createdAt.getTime() < 5
+      const isCreated = pullRequest.updatedAt.getTime() - pullRequest.createdAt.getTime() < 100
       console.log('[app/core/notify#notifyPullRequest] isCreated', isCreated)
 
       if (isCreated) {
