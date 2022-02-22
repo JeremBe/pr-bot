@@ -45,11 +45,17 @@ function getReviewsStates(
   reviews: (Review & {
     slackUser: SlackUser | null
   })[],
+  mention = true,
 ) {
   return reviews.reduce((acc, cur) => {
     const state = statusReview[cur.status]
 
-    return `${acc}(${cur.slackUser?.nickname ?? cur.author}: ${state}) `
+    const author =
+      mention && cur.status === 'review_requested' && cur.slackUser?.slackId
+        ? `<@${cur.slackUser.slackId}>`
+        : `${cur.slackUser?.nickname ?? cur.author}`
+
+    return `${acc}(${author}: ${state}) `
   }, '')
 }
 
@@ -59,10 +65,14 @@ export function blockReview(
   reviews: (Review & {
     slackUser: SlackUser | null
   })[],
+  mention = true,
 ) {
-  const message = `${user?.nickname ?? pullRequest.author} - <${pullRequest.url}| *[${pullRequest.repo}] ${
-    pullRequest.name
-  }*> ${getReviewsStates(reviews)}`
+  const author = mention && user?.slackId ? `<@${user.slackId}>` : `${user?.nickname ?? pullRequest.author}`
+
+  const message = `${author} - <${pullRequest.url}| *[${pullRequest.repo}] ${pullRequest.name}*> ${getReviewsStates(
+    reviews,
+    mention,
+  )}`
 
   return blockSection(message)
 }
@@ -76,7 +86,7 @@ type PullRequestWithReviews = PullRequest & {
 
 export function blockPullRequestList(pullRequests: PullRequestWithReviews[]) {
   const blocks = pullRequests
-    .map((pullRequest) => blockReview(pullRequest, pullRequest.slackUser, pullRequest.reviews))
+    .map((pullRequest) => blockReview(pullRequest, pullRequest.slackUser, pullRequest.reviews, false))
     .flat()
 
   return [...blockSection(`🚀 *${pullRequests.length} PR(s) in queue*`), ...blocks]
@@ -84,7 +94,7 @@ export function blockPullRequestList(pullRequests: PullRequestWithReviews[]) {
 
 export function blockPullRequestsUser(pullRequests: PullRequestWithReviews[]) {
   const blocks = pullRequests
-    .map((pullRequest) => blockReview(pullRequest, pullRequest.slackUser, pullRequest.reviews))
+    .map((pullRequest) => blockReview(pullRequest, pullRequest.slackUser, pullRequest.reviews, false))
     .flat()
 
   return [...blockSection(`${RANDOM_SUCCESS_EMOJI()} *You have ${pullRequests.length} PR(s) in queue*`), ...blocks]
