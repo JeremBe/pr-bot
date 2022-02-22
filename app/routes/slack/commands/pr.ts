@@ -19,13 +19,21 @@ async function getBlocksUser(teamId: string, slackId: string, repositoriesUrl: s
         status: 'open',
       },
       include: {
+        slackUser: true,
         reviews: {
           include: {
             slackUser: true,
           },
         },
-        slackUser: true,
       },
+      orderBy: [
+        {
+          repo: 'asc',
+        },
+        {
+          authorId: 'asc',
+        },
+      ],
     })
 
     return blockPullRequestsUser(pullRequests)
@@ -44,13 +52,21 @@ async function getBlocksPullRequestsList(teamId: string, repositoriesUrl: string
       teamId,
     },
     include: {
+      slackUser: true,
       reviews: {
         include: {
           slackUser: true,
         },
       },
-      slackUser: true,
     },
+    orderBy: [
+      {
+        repo: 'asc',
+      },
+      {
+        authorId: 'asc',
+      },
+    ],
   })
 
   return blockPullRequestList(pullRequests)
@@ -78,7 +94,7 @@ export async function pr(req: Request<unknown, unknown, CommandsBody>, res: Resp
 
     return res.status(200).json({ blocks: blocks })
   } catch (error) {
-    console.log('[app/controllers/slack/commands/pr.ts#pr] Error ', body)
+    console.log('[app/controllers/slack/commands/pr.ts#pr] Error ', { body, error })
 
     return res.status(200).json(blockError)
   }
