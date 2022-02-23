@@ -78,7 +78,14 @@ const initBlocks = (secret: string) => ({
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '*Subscribe to a repository* \n\n */subscribe* `[url_of_repository]` \n Make this channel listen pull requests and reviews of this repository.',
+        text: '*Subscribe to a repository* \n\n */subscribe* `url_of_repository` \n Make this channel listen pull requests and reviews of this repository.',
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '*Unsubscribe to a repository* \n\n */unsubscribe* `url_of_repository` \n Unsubscribe this channel of this repository.',
       },
     },
     {
