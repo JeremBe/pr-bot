@@ -1,4 +1,4 @@
-# :robot: PR-BOT
+# :robot: PR-BOT Demo
 
 The PR-BOT is a tool that will allow us to list pull requests in a Slack channel that are to be reviewed. It will also allow us to trigger actions on Notion, for example to put a ticket in `review`, `done` or to add the link of the PR in the ticket.
 
