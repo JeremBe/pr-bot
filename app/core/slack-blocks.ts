@@ -119,7 +119,7 @@ export function blockUserInfo() {
     blockSection('Just replace `githubUserName` with yours.'),
     blockSection('Then type command `/authorId your_user_id`'),
     blockDivider(),
-    blockSection('You can also add nickname 😎 !! \nType command `/authorId nickname`'),
+    blockSection('You can also add nickname 😎 !! \nType command `/nickname your_nickname`'),
   ]
 
   return blocks.flat()
