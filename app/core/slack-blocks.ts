@@ -77,6 +77,22 @@ export function blockReview(
   return blockSection(message)
 }
 
+export function blockReviewRequested(
+  pullRequest: PullRequest & {
+    slackUser: SlackUser | null
+  },
+  review: Review & {
+    slackUser: SlackUser | null
+  },
+) {
+  const author = pullRequest.slackUser?.nickname ?? pullRequest.author
+  const reviewerAuthor = review.slackUser?.nickname ?? review.author
+
+  const message = `${author} - <${pullRequest.url}| *[${pullRequest.repo}] ${pullRequest.name}*> ${reviewerAuthor} ${statusReview.review_requested}`
+
+  return blockSection(message)
+}
+
 type PullRequestWithReviews = PullRequest & {
   reviews: (Review & {
     slackUser: SlackUser | null

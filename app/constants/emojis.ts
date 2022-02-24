@@ -3,7 +3,7 @@ export const EMOJI = {
   APPROVE: '✅',
   COMMENT: '💬',
   CHANGE: '❌',
-  REVIEW: '👀',
+  REVIEW: '🙏',
   MERGE: '🎉',
 }
 
