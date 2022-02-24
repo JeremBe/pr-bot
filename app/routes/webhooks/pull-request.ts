@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 
 import { database } from '@core/database'
 import { WebhookPullRequest } from './pull-request.types'
-import { notifyPullRequest, notifyReview } from '@core/notify'
+import { notifyPullRequest, notifyReview, notifyReviewRequested, reviewRequested } from '@core/notify'
 import { TeamIdVerified } from '@middlewares/github'
 
 export async function pullRequestController(
@@ -51,12 +51,15 @@ export async function pullRequestController(
         slackUserId: slackUser?.slackId,
       },
       create: pullRequest,
+      include: {
+        slackUser: true,
+      },
     })
 
     if (webhook.action === 'review_requested') {
       console.log('[app/controllers/webhooks/pull-request#pullRequestController] review_requested')
 
-      await database.review.update({
+      const review = await database.review.update({
         where: {
           authorId_pull_requestId: {
             authorId: webhook.requested_reviewer.id,
@@ -67,9 +70,12 @@ export async function pullRequestController(
           status: 'review_requested',
           slackUserId: slackUser?.slackId,
         },
+        include: {
+          slackUser: true,
+        },
       })
 
-      await notifyReview(model)
+      await reviewRequested(model, review)
 
       return res.status(200).json()
     }

@@ -1,6 +1,11 @@
-import { PullRequest, PrismaClient } from '@prisma/client'
+import { PullRequest, PrismaClient, Review, SlackUser } from '@prisma/client'
 
-import { notifyPullRequestCreated, notifyPullRequestMerged, notifyReviews } from '@services/slack/slack-notify'
+import {
+  notifyPullRequestCreated,
+  notifyPullRequestMerged,
+  notifyReviewRequested,
+  notifyReviews,
+} from '@services/slack/slack-notify'
 import { WebhookPullRequest } from '@routes/webhooks/pull-request.types'
 
 const prisma = new PrismaClient()
@@ -27,6 +32,23 @@ export async function notifyReview(pullRequest: PullRequest) {
   })
 
   await notifyReviews(pullRequest, user, reviews, channels)
+}
+
+export async function reviewRequested(
+  pullRequest: PullRequest & {
+    slackUser: SlackUser | null
+  },
+  review: Review & {
+    slackUser: SlackUser | null
+  },
+) {
+  const channels = await prisma.slackChannelSubscription.findMany({
+    where: {
+      repo_url: pullRequest.repo_url,
+    },
+  })
+
+  await notifyReviewRequested(pullRequest, review, channels)
 }
 
 export async function notifyPullRequest(pullRequest: PullRequest, webhook: WebhookPullRequest) {

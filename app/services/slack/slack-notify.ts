@@ -1,7 +1,7 @@
 import { PullRequest, Review, SlackChannelSubscription, SlackUser } from '@prisma/client'
 
 import { getWebClient } from '@services/slack/slack'
-import { blockPullRequestCreated, blockPullRequestMerged, blockReview } from '@core/slack-blocks'
+import { blockPullRequestCreated, blockPullRequestMerged, blockReview, blockReviewRequested } from '@core/slack-blocks'
 
 const webClient = getWebClient()
 
@@ -55,6 +55,33 @@ export async function notifyReviews(
   await Promise.all(
     channels.map((channel) =>
       webClient.chat.postMessage({ blocks: block, text: 'message', channel: user?.slackId ?? channel.channelId }),
+    ),
+  )
+}
+
+export async function notifyReviewRequested(
+  pullRequest: PullRequest & {
+    slackUser: SlackUser | null
+  },
+  review: Review & {
+    slackUser: SlackUser | null
+  },
+  channels: SlackChannelSubscription[],
+) {
+  console.log('[app/services/slack/slack-notify#notifyReviews]')
+  console.log(pullRequest)
+
+  const block = blockReviewRequested(pullRequest, review)
+
+  if (review.slackUser?.slackId) {
+    await webClient.chat.postMessage({ blocks: block, text: 'message', channel: review.slackUser.slackId })
+
+    return
+  }
+
+  await Promise.all(
+    channels.map((channel) =>
+      webClient.chat.postMessage({ blocks: block, text: 'message', channel: channel.channelId }),
     ),
   )
 }
