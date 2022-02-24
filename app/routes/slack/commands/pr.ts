@@ -5,15 +5,12 @@ import { database } from '@core/database'
 import { CommandsBody } from './command.type'
 import { blockPullRequestList, blockPullRequestsUser, blockUserInfo } from '@core/slack-blocks'
 
-async function getBlocksUser(teamId: string, slackId: string, repositoriesUrl: string[]) {
+async function getBlocksUser(teamId: string, slackId: string) {
   const user = await database.slackUser.findUnique({ where: { slackId } })
 
   if (user?.authorId) {
     const pullRequests = await database.pullRequest.findMany({
       where: {
-        repo_url: {
-          in: repositoriesUrl,
-        },
         teamId,
         authorId: user.authorId,
         status: 'open',
@@ -29,9 +26,6 @@ async function getBlocksUser(teamId: string, slackId: string, repositoriesUrl: s
       orderBy: [
         {
           repo: 'asc',
-        },
-        {
-          authorId: 'asc',
         },
       ],
     })
@@ -89,7 +83,7 @@ export async function pr(req: Request<unknown, unknown, CommandsBody>, res: Resp
 
     const blocks =
       body.text === 'me'
-        ? await getBlocksUser(body.team_id, body.user_id, repositoriesUrl)
+        ? await getBlocksUser(body.team_id, body.user_id)
         : await getBlocksPullRequestsList(body.team_id, repositoriesUrl)
 
     return res.status(200).json({ blocks: blocks })
