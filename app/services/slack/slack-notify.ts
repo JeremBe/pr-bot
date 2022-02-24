@@ -52,9 +52,15 @@ export async function notifyReviews(
 
   const block = blockReview(pullRequest, user, reviews)
 
+  if (user?.slackId) {
+    await webClient.chat.postMessage({ blocks: block, text: 'message', channel: user.slackId })
+
+    return
+  }
+
   await Promise.all(
     channels.map((channel) =>
-      webClient.chat.postMessage({ blocks: block, text: 'message', channel: user?.slackId ?? channel.channelId }),
+      webClient.chat.postMessage({ blocks: block, text: 'message', channel: channel.channelId }),
     ),
   )
 }
