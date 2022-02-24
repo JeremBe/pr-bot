@@ -54,7 +54,7 @@ export async function notifyReviews(
 
   await Promise.all(
     channels.map((channel) =>
-      webClient.chat.postMessage({ blocks: block, text: 'message', channel: channel.channelId }),
+      webClient.chat.postMessage({ blocks: block, text: 'message', channel: user?.slackId ?? channel.channelId }),
     ),
   )
 }
